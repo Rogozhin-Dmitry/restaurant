@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'cooker.apps.CookerConfig',
     'waiter.apps.WaiterConfig',
     'homepage.apps.HomepageConfig',
+    'core.apps.CoreConfig',
 ]
 
 MIDDLEWARE = [
