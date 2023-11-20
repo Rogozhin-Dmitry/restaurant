@@ -1,18 +1,62 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/dishes.css' %}">
+	<script defer src="{% static 'js/dishes.js' %}"></script>
+	<script defer src="{% static 'js/get_cookie.js' %}"></script>
+	<title>Меню</title>
 </head>
 <body>
-    {% for dish in dishes %}
-        {{ dish.id }}<br>
-        {{ dish.name }}<br>
-        {{ dish.category.name }}<br>
-        {{ dish.text }}<br>
-        {% for tag in dish.tags.all %}
-            {{ tag.name }},
-        {% endfor %}<br>
-    {% endfor %}
+	<div id="page">
+		<header>
+			<a href="{% url 'waiter:orders' %}" class="header__back">
+				К списку заказов
+			</a>
+			<a href="{% url 'waiter:cart' %}" class="header__cart">
+				Корзина
+			</a>
+		</header>
+		<content>
+			<section>
+				<div>
+				{% for dish in dishes %}
+					{% ifchanged dish.category.name %}
+						</div>
+						<h2>{{ dish.category.name|capfirst }}</h2>
+						<div class="items-list">
+					{% endifchanged  %}
+					<div class="item">
+						<div class="item__image">
+							<img src="{% static 'img/pizza.jpg' %}" alt="item image">
+						</div>
+						<div class="item__info">
+							<div class="item__name">
+								{{ dish.name|capfirst }}
+							</div>
+							<div class="item__tags">
+								{% for tag in dish.tags.all %}
+									<span class="item__tag">{{ tag.name|capfirst }}</span>
+								{% endfor %}
+							</div>
+							<div class="item__description">
+								{{ dish.text|capfirst }}
+							</div>
+							<div class="item__cost">
+								{{ dish.coast }}
+							</div>
+							<div class="item__amount">
+								<button class="plus" onclick="add_dish(this.id)" id="{{ dish.id }}">+</button>
+								<div class="amount">0</div>
+								<button class="minus" onclick="unadd_dish(this.id)" id="{{ dish.id }}">-</button>
+							</div>
+						</div>
+					</div>
+				{% endfor %}
+			</section>
+		</content>
+	</div>
 </body>
 </html>

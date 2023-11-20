@@ -1,27 +1,25 @@
-{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" type="text/css" href="./css/price.css">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/pay.css' %}">
-	<title>Чек</title>
+	<title></title>
 </head>
 <body>
 	<div id="page">
 		<header>
-			<a href="{% url 'waiter:orders' %}" class="header__back">
-				К списку заказов
-			</a>
-            <a href="{% url 'waiter:menu' %}" class="header__cart">
-				К выбору блюд
+			<a href="./orders.html" class="header__cart">
+				К зказам
 			</a>
 		</header>
 		<content>
+			
+			
 			<div class="price">
-				{{ sum }}₽
+				1488$
 			</div>
+						
 		</content>
 	</div>
 </body>

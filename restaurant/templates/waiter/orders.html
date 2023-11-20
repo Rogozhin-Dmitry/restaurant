@@ -1,10 +1,122 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/orders.css' %}">
+	<title>Заказы</title>
 </head>
 <body>
+	<div id="page">
+		<header>
+			<a href="{% url 'waiter:menu' %}" class="header__back">
+				К выбору блюд
+			</a>
+			<a href="{% url 'waiter:cart' %}" class="header__cart">
+				Корзина
+			</a>
+		</header>
+		<content>
+			<section>
+				<h2>Готовятся</h2>
+				<div class="items-list">
+					{% for order in orders_not_done %}
+						<div class="item">
+							<div class="item__info">
+								<div class="info__head">
+									<div class="item__name">
+										{{ order.table.name }}
+									</div>
+									<div class="item__time">
+										{{ order.created_on|date:"H" }}:{{ order.created_on|date:"i" }}
+									</div>
+								</div>
+								<div class="item__dishes">
+                                    {% for dish in order.dishes.all %}
+                                        <div class="dishes__dish">
+                                            <span class="dish__name">{{ dish.dish.name }}</span>
+                                            <span class="dish__amount">{{ dish.quantity }}</span><span class="amount__hint">шт.</span>
+                                            {% if dish.is_done %}
+                                                <span class="dish__status status-done">Готово</span>
+                                            {% else %}
+									            <span class="dish__status status-cooking">Готовится</span>
+                                            {% endif %}
+                                        </div>
+                                    {% endfor %}
+								</div>
+							</div>
+						</div>
+					{% endfor %}
+				</div>
+			</section>
 
+			<section>
+				<h2>Готовы</h2>
+				<div class="items-list">
+					{% for order in orders_done %}
+					    <div class="item">
+                            <div class="item__info">
+                                <div class="info__head">
+                                    <div class="item__name">
+                                        {{ order.table.name }}
+                                    </div>
+                                    <div class="item__time">
+                                        {{ order.created_on|date:"H" }}:{{ order.created_on|date:"i" }}
+                                    </div>
+                                </div>
+                                <div class="item__dishes">
+                                    {% for dish in order.dishes.all %}
+                                        <div class="dishes__dish">
+                                            <span class="dish__name">{{ dish.dish.name }}</span>
+                                            <span class="dish__amount">{{ dish.quantity }}</span><span class="amount__hint">шт.</span>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <a href="{% url 'waiter:done' order_pk=order.pk %}" class="button-done">
+                                Выдано
+                            </a>
+                        </div>
+                    {% endfor %}
+				</div>
+			</section>
+
+			<section>
+				<h2>Выданные</h2>
+                <div class="items-list">
+					{% for order in orders_payed %}
+					    <div class="item">
+                            <div class="item__info">
+                                <div class="info__head">
+                                    <div class="item__name">
+                                        {{ order.table.name }}
+                                    </div>
+                                    <div class="item__time">
+                                        {{ order.created_on|date:"H" }}:{{ order.created_on|date:"i" }}
+                                    </div>
+                                </div>
+                                <div class="item__dishes">
+                                    {% for dish in order.dishes.all %}
+                                        <div class="dishes__dish">
+                                            <span class="dish__name">{{ dish.dish.name }}</span>
+                                            <span class="dish__amount">{{ dish.quantity }}</span><span class="amount__hint">шт.</span>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <a href="{% url 'waiter:pay' order_pk=order.pk %}" class="button-done">
+                                Оплатить
+                            </a>
+                            <a href="{% url 'waiter:sorry' order_pk=order.pk %}" class="button-sorry">
+                                Извиниться
+                            </a>
+                        </div>
+                    {% endfor %}
+				</div>
+			</section>
+		</content>
+	</div>
 </body>
 </html>

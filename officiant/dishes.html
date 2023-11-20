@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="./css/dishes.css">
+	<script defer src="./js/dishes.js"></script>
+	<script defer src="./js/get_cookie.js"></script>
+	<title></title>
+</head>
+<body>
+	<div id="page">
+		<header>
+			<a href="#" class="header__back">
+				К списку заказов
+			</a>
+			<a href="cart.html" class="header__cart">
+				Корзина
+			</a>
+		</header>
+		<content>
+			<section>
+				<h2>Название категории</h2>
+				<div class="items-list">
+
+					<div class="item">
+						<div class="item__image">
+							<img src="./img/pizza.jpg" alt="item image">
+						</div>
+						<div class="item__info">
+							<div class="item__name">
+								Название блюда
+							</div>
+							<div class="item__tags">
+								<span class="item__tag">вкусняшка</span>
+								<span class="item__tag">горячее</span>
+							</div>
+							<div class="item__description">
+								Супер пупер подробное и очень интересное описание блюда
+							</div>
+							<div class="item__cost">
+								19000$
+							</div>
+							<div class="item__amount">
+								<button class="plus" onclick="add_dish(this.id)" id="1">+</button>
+								<div class="amount">0</div>
+								<button class="minus" onclick="unadd_dish(this.id)" id="1">-</button>
+							</div>
+						</div>
+					</div>
+
+					<div class="item">
+						<div class="item__image">
+							<img src="./img/pizza.jpg" alt="item image">
+						</div>
+						<div class="item__info">
+							<div class="item__name">
+								Название блюда
+							</div>
+							<div class="item__tags">
+								<span class="item__tag">вкусняшка</span>
+								<span class="item__tag">горячее</span>
+							</div>
+							<div class="item__description">
+								Супер пупер подробное и очень интересное описание блюда
+							</div>
+							<div class="item__cost">
+								19000$
+							</div>
+							<div class="item__amount">
+								<button class="plus" onclick="add_dish(this.id)" id="2">+</button>
+								<div class="amount">0</div>
+								<button class="minus" onclick="unadd_dish(this.id)" id="2">-</button>
+							</div>
+						</div>
+					</div>
+
+					<div class="item">
+						<div class="item__image">
+							<img src="./img/pizza.jpg" alt="item image">
+						</div>
+						<div class="item__info">
+							<div class="item__name">
+								Название блюда
+							</div>
+							<div class="item__tags">
+								<span class="item__tag">вкусняшка</span>
+								<span class="item__tag">горячее</span>
+							</div>
+							<div class="item__description">
+								Супер пупер подробное и очень интересное описание блюда
+							</div>
+							<div class="item__cost">
+								19000$
+							</div>
+							<div class="item__amount">
+								<button class="plus" onclick="add_dish(this.id)" id="3">+</button>
+								<div class="amount">0</div>
+								<button class="minus" onclick="unadd_dish(this.id)" id="3">-</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+		</content>
+	</div>
+</body>
+</html>

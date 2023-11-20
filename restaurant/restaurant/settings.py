@@ -13,6 +13,7 @@ env = environ.Env(
     DJANGO_USE_TZ=(bool, True),
     DJANGO_STATIC_URL=(str, "static/"),
     DJANGO_ALLOW_REVERSE=(str, False),
+    DJANGO_STATIC_DIR=(str, "sttic")
 )
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -112,6 +113,7 @@ USE_I18N = env("DJANGO_USE_I18N")
 USE_TZ = env("DJANGO_USE_TZ")
 
 STATIC_URL = env("DJANGO_STATIC_URL")
+STATICFILES_DIRS = [BASE_DIR / env("DJANGO_STATIC_DIR")]
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 

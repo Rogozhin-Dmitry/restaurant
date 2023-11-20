@@ -1,14 +1,46 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/cart.css' %}">
+	<title>Корзина</title>
 </head>
 <body>
-    {{ dishes }}
-    <form method="POST">
-        {% csrf_token %}
-        <input type="submit">
-    </form>
+	<div id="page">
+		<header>
+			<a href="{% url 'waiter:orders' %}" class="header__back">
+				К списку заказов
+			</a>
+			<a href="{% url 'waiter:menu' %}" class="header__cart">
+				К выбору блюд
+			</a>
+		</header>
+		<content>
+			<div class="orders">
+				{% for dish in dishes %}
+					<div class="orders__order">
+						<span class="order__name">{{ dish.name }}</span>
+						<div class="order__info">
+							<span class="order__cost">{% widthratio dish.count 1 dish.coast %}₽</span>
+							<span class="order__amount">{{ dish.count }}</span>
+							<span class="hint"> шт.</span>
+						</div>
+					</div>
+				{% endfor %}
+			</div>
+
+			<form action="" method="POST">
+				{% csrf_token %}
+				<select name="places" class="places">
+					{% for table in tables %}
+						<option value="{{ table.pk }}">{{ table.name }}</option>
+					{% endfor %}
+				</select>
+				<button type="submit" onclick="" class="confirm">Подтвердить заказ</button>
+			</form>
+		</content>
+	</div>
 </body>
 </html>

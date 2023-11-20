@@ -15,7 +15,9 @@ class Menu(TemplateView):
         context = {
             "dishes": dishes,
         }
-        return render(request, self.TEMPLATE, context)
+        response = render(request, self.TEMPLATE, context)
+        response.delete_cookie('dishes', path='waiter')
+        return response
 
 
 class Sorry(TemplateView):
@@ -27,9 +29,7 @@ class Sorry(TemplateView):
             new_dish.order = order
             new_dish.save()
 
-            return redirect('waiter:orders')
-        else:
-            return redirect('waiter:orders')
+        return redirect('waiter:orders')
 
 
 class Pay(TemplateView):
@@ -41,12 +41,12 @@ class Pay(TemplateView):
             order.is_payed = True
             order.save()
             sum_to_pay = Order.objects.sum_to_pay_by_order_id(order_pk)
-            context = {
-                "sum": sum_to_pay
-            }
-            return render(request, self.TEMPLATE, context)
-        else:
-            return redirect('waiter:orders')
+            if sum_to_pay:
+                context = {
+                    "sum": sum_to_pay
+                }
+                return render(request, self.TEMPLATE, context)
+        return redirect('waiter:orders')
 
 
 class Done(TemplateView):
@@ -56,64 +56,58 @@ class Done(TemplateView):
             order.is_done = True
             order.save()
 
-            return redirect('waiter:orders')
-        else:
-            return redirect('waiter:orders')
+        return redirect('waiter:orders')
 
 
 class Orders(TemplateView):
     TEMPLATE = "waiter/orders.html"
 
     def get(self, request, *args, **kwargs):
-        dishes_done, dishes_not_done = Order.objects.actual_orders_this_dishes_done_nd_not_done()
-
-        for i in dishes_done:
-            print(i)
-            print(i.pk)
-            print(i.table.name)
-            print(i.created_on)
-            for j in i.dishes.all():
-                print(j.dish, j.quantity, j.is_done)
-            print('-' * 12)
-        for i in dishes_not_done:
-            print(i.pk)
-            print(i.table.name)
-            print(i.created_on)
-            for j in i.dishes.all():
-                print(j.dish, j.quantity, j.is_done)
-            print('-' * 12)
-        return render(request, self.TEMPLATE)
+        orders_not_done, orders_done, orders_payed = Order.objects.actual_orders_this_dishes_done_nd_not_done()
+        context = {
+            "orders_not_done": orders_not_done,
+            "orders_done": orders_done,
+            "orders_payed": orders_payed,
+        }
+        return render(request, self.TEMPLATE, context)
 
 
 class Cart(TemplateView):
     TEMPLATE = "waiter/cart.html"
 
     def get(self, request, *args, **kwargs):
-        dishes = request.COOKIES.get("new_order", '{}')
+        dishes = request.COOKIES.get("dishes", '{}')
         dishes_dict = loads(dishes)
         dishes_ids = dishes_dict.keys()
         dishes = Dish.objects.published_dishes_name_by_ids(dishes_ids)
+        for dish in dishes:
+            dish.count = dishes_dict[str(dish.pk)]
         context = {
             "dishes": dishes,
             "form": Form(),
+            "tables": Table.objects.un_private_tables(),
         }
         return render(request, self.TEMPLATE, context)
 
     def post(self, request):
         if request.method == 'POST':
-            dishes_count = request.COOKIES.get("new_order", '{}')
-            table_id = 1
+            dishes_count = request.COOKIES.get("dishes", '{}')
+            dishes_count = loads(dishes_count)
+
+            table_id = dict(request.POST.items())["places"]
 
             dishes_ids = dishes_count.keys()
+
             dishes = Dish.objects.published_dishes_name_by_ids(dishes_ids)
             order = Order()
             order.table = Table.objects.un_private_table_by_id(table_id)
-            order.save()
+            if dishes:
+                order.save()
             for dish in dishes:
                 new_dish = OrderDish()
                 new_dish.dish = dish
                 new_dish.order = order
-                new_dish.quantity = dishes_count.get(dish.id, 1)
+                new_dish.quantity = dishes_count.get(str(dish.pk), 1)
                 new_dish.save()
-
+            return redirect('waiter:menu')
         return redirect('waiter:cart')

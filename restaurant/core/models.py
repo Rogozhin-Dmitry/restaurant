@@ -4,7 +4,7 @@ from django.db.models import Prefetch
 
 class NameMixin(models.Model):
     name = models.CharField(
-        verbose_name="Имя", max_length=150, help_text="Макс 150 символов"
+        verbose_name="Название", max_length=150, help_text="Макс 150 символов"
     )
 
     class Meta:
@@ -69,7 +69,7 @@ class DishManager(models.Manager):
             self.get_queryset()
             .filter(is_published=True)
             .filter(pk__in=dishes_id)
-            .only("id", "name")
+            .only("id", "name", "coast")
         )
 
     def published_dishes_ids(self):
@@ -217,42 +217,49 @@ class Category(IsPublishedMixin, NameMixin):
 
 
 class OrderManager(models.Manager):
-    def actual_orders_this_dishes_done_nd_not_done(self) -> (list, list):
+    def actual_orders_this_dishes_done_nd_not_done(self) -> (list, list, list):
         orders = self.actual_orders_this_dishes()
-        dishes_done = []
-        dishes_not_done = []
+        orders_payed = []
+        orders_done = []
+        orders_not_done = []
         for order in orders:
-            if all(dish.is_done for dish in order.dishes.all()):
-                dishes_done.append(order)
+            if order.is_done:
+                orders_payed.append(order)
+            elif all(dish.is_done for dish in order.dishes.all()):
+                orders_done.append(order)
             else:
-                dishes_not_done.append(order)
-        return dishes_done, dishes_not_done
+                orders_not_done.append(order)
+        return orders_not_done, orders_done, orders_payed
 
     def sum_to_pay_by_order_id(self, order_id):
+        response = (
+            self.get_queryset()
+            .filter(is_payed=True, is_done=True)
+            .filter(pk=order_id)
+            .only("pk")
+            .prefetch_related(
+                Prefetch(
+                    "dishes",
+                    queryset=OrderDish.objects.only(
+                        "quantity", "dish",
+                    ).select_related("dish")
+                    .only('dish__coast', )
+                ),
+            )
+            .first()
+        )
+        print(response)
+        if not response:
+            return
         return sum(
-            [dish.dish.coast * dish.quantity for dish in
-             self.get_queryset()
-             .filter(is_done=False)
-             .filter(pk=order_id)
-             .only("pk")
-             .prefetch_related(
-                 Prefetch(
-                     "dishes",
-                     queryset=OrderDish.objects.only(
-                         "quantity", "dish",
-                     ).select_related("dish")
-                     .only('dish__coast', )
-                 ),
-             )
-             .first()
-             .dishes.all()
+            [dish.dish.coast * dish.quantity for dish in response.dishes.all()
              ]
         )
 
     def actual_order_by_id(self, order_id):
         return (
             self.get_queryset()
-            .filter(is_done=False)
+            .filter(is_payed=False)
             .filter(pk=order_id)
             .first()
         )
@@ -260,9 +267,9 @@ class OrderManager(models.Manager):
     def actual_orders_this_dishes(self):
         return (
             self.get_queryset()
-            .filter(is_done=False)
+            .filter(is_payed=False)
             .select_related("table")
-            .only("pk", "created_on", "table__name")
+            .only("pk", "created_on", "is_done", "table__name")
             .prefetch_related(
                 Prefetch(
                     "dishes",
@@ -312,6 +319,15 @@ class TableManager(models.Manager):
             .first()
         )
 
+    def un_private_tables(self):
+        return (
+            self.get_queryset()
+            .filter(is_private=False)
+            .order_by("name")
+            .only("pk", "name")
+            .all()
+        )
+
 
 class Table(NameMixin):
     is_private = models.BooleanField(
@@ -339,3 +355,19 @@ class OrderDish(models.Model):
     class Meta:
         verbose_name = "блюдо в заказ"
         verbose_name_plural = "Блюда в заказе"
+
+
+class Product(NameMixin):
+    class Meta:
+        verbose_name = "Продукт"
+        verbose_name_plural = "Продукты"
+
+
+class DishProduct(models.Model):
+    order = models.ForeignKey(Product, verbose_name="Продукт", related_name='dishes', on_delete=models.CASCADE)
+    dish = models.ForeignKey(Dish, verbose_name="Блюдо", related_name='products', on_delete=models.CASCADE)
+    weight = models.PositiveIntegerField(verbose_name="Масса в граммах", default=100)
+
+    class Meta:
+        verbose_name = "продукт в блюде"
+        verbose_name_plural = "продукты в блюде"
