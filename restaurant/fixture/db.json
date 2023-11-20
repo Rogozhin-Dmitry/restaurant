@@ -1,0 +1,369 @@
+[
+{
+  "model": "core.dish",
+  "pk": 1,
+  "fields": {
+    "name": "Пиво",
+    "is_published": true,
+    "text": "Вкусное, невъебенное",
+    "category": 1,
+    "coast": 230,
+    "main_image": "",
+    "tags": [
+      1,
+      2,
+      3
+    ]
+  }
+},
+{
+  "model": "core.dish",
+  "pk": 2,
+  "fields": {
+    "name": "Сидр",
+    "is_published": true,
+    "text": "не вкусно, дорого",
+    "category": 1,
+    "coast": 1000,
+    "main_image": "uploads/diagram.png",
+    "tags": [
+      2,
+      3
+    ]
+  }
+},
+{
+  "model": "core.dish",
+  "pk": 7,
+  "fields": {
+    "name": "Блюдо извиняйка",
+    "is_published": false,
+    "text": "",
+    "category": 6,
+    "coast": 0,
+    "main_image": "",
+    "tags": []
+  }
+},
+{
+  "model": "core.dish",
+  "pk": 8,
+  "fields": {
+    "name": "Комплимент от шеф повара",
+    "is_published": false,
+    "text": "",
+    "category": 7,
+    "coast": 0,
+    "main_image": "",
+    "tags": []
+  }
+},
+{
+  "model": "core.tag",
+  "pk": 1,
+  "fields": {
+    "name": "алкоголь",
+    "is_published": true
+  }
+},
+{
+  "model": "core.tag",
+  "pk": 2,
+  "fields": {
+    "name": "напиток",
+    "is_published": true
+  }
+},
+{
+  "model": "core.tag",
+  "pk": 3,
+  "fields": {
+    "name": "жидкое",
+    "is_published": true
+  }
+},
+{
+  "model": "core.category",
+  "pk": 1,
+  "fields": {
+    "name": "вкусняшка",
+    "is_published": true
+  }
+},
+{
+  "model": "core.category",
+  "pk": 6,
+  "fields": {
+    "name": "Извинения",
+    "is_published": false
+  }
+},
+{
+  "model": "core.category",
+  "pk": 7,
+  "fields": {
+    "name": "Извинения",
+    "is_published": false
+  }
+},
+{
+  "model": "core.order",
+  "pk": 1,
+  "fields": {
+    "is_payed": true,
+    "is_done": false,
+    "table": 6,
+    "created_on": "2023-11-18T00:00:00Z"
+  }
+},
+{
+  "model": "core.order",
+  "pk": 2,
+  "fields": {
+    "is_payed": false,
+    "is_done": false,
+    "table": 4,
+    "created_on": "2023-11-18T13:00:48.791Z"
+  }
+},
+{
+  "model": "core.order",
+  "pk": 3,
+  "fields": {
+    "is_payed": false,
+    "is_done": false,
+    "table": 2,
+    "created_on": "2023-11-18T13:05:42.933Z"
+  }
+},
+{
+  "model": "core.order",
+  "pk": 4,
+  "fields": {
+    "is_payed": false,
+    "is_done": false,
+    "table": 1,
+    "created_on": "2023-11-18T13:43:57.123Z"
+  }
+},
+{
+  "model": "core.order",
+  "pk": 5,
+  "fields": {
+    "is_payed": false,
+    "is_done": false,
+    "table": 1,
+    "created_on": "2023-11-18T13:44:16.496Z"
+  }
+},
+{
+  "model": "core.order",
+  "pk": 6,
+  "fields": {
+    "is_payed": false,
+    "is_done": false,
+    "table": 1,
+    "created_on": "2023-11-18T13:47:11.779Z"
+  }
+},
+{
+  "model": "core.order",
+  "pk": 7,
+  "fields": {
+    "is_payed": true,
+    "is_done": true,
+    "table": 1,
+    "created_on": "2023-11-18T13:47:12.591Z"
+  }
+},
+{
+  "model": "core.order",
+  "pk": 8,
+  "fields": {
+    "is_payed": true,
+    "is_done": true,
+    "table": 4,
+    "created_on": "2023-11-18T16:22:04.540Z"
+  }
+},
+{
+  "model": "core.order",
+  "pk": 31,
+  "fields": {
+    "is_payed": false,
+    "is_done": false,
+    "table": 7,
+    "created_on": "2023-11-18T18:57:44.270Z"
+  }
+},
+{
+  "model": "core.order",
+  "pk": 32,
+  "fields": {
+    "is_payed": false,
+    "is_done": false,
+    "table": 4,
+    "created_on": "2023-11-18T18:58:10.688Z"
+  }
+},
+{
+  "model": "core.order",
+  "pk": 33,
+  "fields": {
+    "is_payed": false,
+    "is_done": false,
+    "table": 7,
+    "created_on": "2023-11-18T18:58:36.467Z"
+  }
+},
+{
+  "model": "core.order",
+  "pk": 34,
+  "fields": {
+    "is_payed": false,
+    "is_done": false,
+    "table": 7,
+    "created_on": "2023-11-18T19:00:43.930Z"
+  }
+},
+{
+  "model": "core.order",
+  "pk": 35,
+  "fields": {
+    "is_payed": false,
+    "is_done": false,
+    "table": 7,
+    "created_on": "2023-11-18T19:00:59.718Z"
+  }
+},
+{
+  "model": "core.order",
+  "pk": 36,
+  "fields": {
+    "is_payed": false,
+    "is_done": false,
+    "table": 7,
+    "created_on": "2023-11-18T19:01:19.762Z"
+  }
+},
+{
+  "model": "core.order",
+  "pk": 37,
+  "fields": {
+    "is_payed": false,
+    "is_done": false,
+    "table": 7,
+    "created_on": "2023-11-18T19:01:37.283Z"
+  }
+},
+{
+  "model": "core.order",
+  "pk": 38,
+  "fields": {
+    "is_payed": true,
+    "is_done": true,
+    "table": 7,
+    "created_on": "2023-11-18T19:02:03.500Z"
+  }
+},
+{
+  "model": "core.order",
+  "pk": 39,
+  "fields": {
+    "is_payed": false,
+    "is_done": false,
+    "table": 7,
+    "created_on": "2023-11-18T19:03:50.974Z"
+  }
+},
+{
+  "model": "core.order",
+  "pk": 40,
+  "fields": {
+    "is_payed": false,
+    "is_done": false,
+    "table": 3,
+    "created_on": "2023-11-18T19:04:12.493Z"
+  }
+},
+{
+  "model": "core.order",
+  "pk": 41,
+  "fields": {
+    "is_payed": true,
+    "is_done": true,
+    "table": 1,
+    "created_on": "2023-11-18T19:57:10.672Z"
+  }
+},
+{
+  "model": "core.table",
+  "pk": 1,
+  "fields": {
+    "name": "7 столик",
+    "is_private": false
+  }
+},
+{
+  "model": "core.table",
+  "pk": 2,
+  "fields": {
+    "name": "6 столик",
+    "is_private": false
+  }
+},
+{
+  "model": "core.table",
+  "pk": 3,
+  "fields": {
+    "name": "5 столик",
+    "is_private": false
+  }
+},
+{
+  "model": "core.table",
+  "pk": 4,
+  "fields": {
+    "name": "4 столик",
+    "is_private": false
+  }
+},
+{
+  "model": "core.table",
+  "pk": 5,
+  "fields": {
+    "name": "3 столик",
+    "is_private": false
+  }
+},
+{
+  "model": "core.table",
+  "pk": 6,
+  "fields": {
+    "name": "2 столик",
+    "is_private": false
+  }
+},
+{
+  "model": "core.table",
+  "pk": 7,
+  "fields": {
+    "name": "1 столик",
+    "is_private": false
+  }
+},
+{
+  "model": "core.product",
+  "pk": 1,
+  "fields": {
+    "name": "Вода"
+  }
+},
+{
+  "model": "core.product",
+  "pk": 2,
+  "fields": {
+    "name": "Хмель"
+  }
+}
+]

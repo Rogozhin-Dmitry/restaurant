@@ -13,7 +13,7 @@ env = environ.Env(
     DJANGO_USE_TZ=(bool, True),
     DJANGO_STATIC_URL=(str, "static/"),
     DJANGO_ALLOW_REVERSE=(str, False),
-    DJANGO_STATIC_DIR=(str, "sttic")
+    DJANGO_STATIC_DIR=(str, "static")
 )
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -44,10 +44,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
     'cooker.apps.CookerConfig',
     'waiter.apps.WaiterConfig',
     'homepage.apps.HomepageConfig',
     'core.apps.CoreConfig',
+
+    'sorl.thumbnail',
 ]
 
 MIDDLEWARE = [

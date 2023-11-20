@@ -1,4 +1,5 @@
 from django.contrib import admin
+from sorl.thumbnail.admin import AdminImageMixin
 
 from core.models import Category, Tag, Dish, Order, Table, OrderDish, Product, DishProduct
 
@@ -9,13 +10,14 @@ class CoreDishProductAdmin(admin.TabularInline):
 
 
 @admin.register(Dish)
-class CatalogItemAdmin(admin.ModelAdmin):
+class CatalogItemAdmin(AdminImageMixin, admin.ModelAdmin):
     list_display = (
         "name",
         "small_text",
         "category",
         "is_published",
-        "coast"
+        "coast",
+        "admin_image"
     )
     list_editable = ("is_published",)
     filter_horizontal = (

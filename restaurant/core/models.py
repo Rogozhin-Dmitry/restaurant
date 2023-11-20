@@ -1,5 +1,7 @@
 from django.db import models
 from django.db.models import Prefetch
+from django.utils import html
+from sorl import thumbnail
 
 
 class NameMixin(models.Model):
@@ -175,10 +177,38 @@ class Dish(IsPublishedMixin, NameMixin):
         verbose_name="Теги",
     )
 
+    main_image = thumbnail.ImageField(
+        verbose_name="Основная картинка",
+        help_text="Любая картинка, вам же на неё смотреть...",
+        upload_to='uploads/',
+        default='',
+    )
+
+    def get_image_1000x650(self):
+        if self.main_image:
+            return thumbnail.get_thumbnail(self.main_image, '1000x650', quality=51)
+        return {"url": 'standard'}
+
+    def get_image_300x255(self):
+        if self.main_image:
+            return thumbnail.get_thumbnail(self.main_image, '300x255', quality=51)
+        return {"url": 'standard'}
+
     def small_text(self):
         if len(str(self.text)) > 101:
             return str(self.text)[:100]
         return str(self.text)
+
+    def admin_image(self):
+        if self.main_image:
+            return html.format_html(
+                f'<img src="{self.main_image.url}" '
+                + 'style="width: 45px; height:45px;" />'
+            )
+        return 'Нет изображения'
+
+    admin_image.allow_tags = True
+    admin_image.short_description = 'Основная картинка'
 
     def __str__(self):
         return self.name
@@ -252,8 +282,7 @@ class OrderManager(models.Manager):
         if not response:
             return
         return sum(
-            [dish.dish.coast * dish.quantity for dish in response.dishes.all()
-             ]
+            [dish.get_cost() for dish in response.dishes.all()]
         )
 
     def actual_order_by_id(self, order_id):
